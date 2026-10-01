@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a0a">
+<title>Move+ Moda Fitness | Catálogo</title>
+<style>
+:root{--gold:#d4af37;--gold2:#f0d36a;--bg:#080808;--card:#121212;--card2:#191919;--text:#f6f6f6;--muted:#a7a7a7;--line:#2b2b2b;--danger:#c62828}
+*{box-sizing:border-box}body{margin:0;background:#080808;color:var(--text);font-family:Arial,Helvetica,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}
+.app{min-height:100vh;background:linear-gradient(180deg,#080808,#111)}
+header{position:sticky;top:0;z-index:20;background:rgba(8,8,8,.96);backdrop-filter:blur(12px);border-bottom:1px solid #202020}
+.header-inner{max-width:1200px;margin:auto;padding:14px 18px;display:flex;align-items:center;gap:18px}
+.logo{width:170px;height:58px;object-fit:contain;object-position:left center}
+.header-title{margin-left:auto;color:#aaa;font-size:13px}
+main{max-width:1200px;margin:auto;padding:22px 18px 50px}
+.tabs{display:flex;gap:8px;margin-bottom:24px}
+.tab{border:1px solid var(--line);background:#141414;color:#aaa;padding:11px 16px;border-radius:12px;font-weight:800}
+.tab.active{background:var(--gold);color:#111;border-color:var(--gold)}
+.view{display:none}.view.active{display:block}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:15px;margin-bottom:16px}
+h1,h2,h3{margin:0}.section-head h1{font-size:26px}.section-head p{margin:6px 0 0;color:var(--muted);font-size:13px}
+.count{font-weight:800;color:var(--gold2)}
+.filters{display:grid;grid-template-columns:1.5fr 1fr 1fr auto;gap:9px;margin-bottom:12px}
+input,select{min-height:46px;width:100%;background:#111;border:1px solid var(--line);border-radius:12px;color:#fff;padding:0 13px;outline:none}
+input:focus,select:focus{border-color:var(--gold)}
+.filter-status{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.pill{border:1px solid var(--line);background:#111;color:#aaa;padding:9px 13px;border-radius:999px;font-size:12px;font-weight:800}
+.pill.active{border-color:var(--gold);color:var(--gold2);background:#211c0c}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.product{background:var(--card);border:1px solid var(--line);border-radius:17px;overflow:hidden;position:relative}
+.photo-wrap{aspect-ratio:1/1.16;background:#1c1c1c;position:relative;overflow:hidden}
+.photo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.placeholder{height:100%;display:grid;place-items:center;color:#666;font-size:52px}
+.product.sold .photo-wrap img{filter:grayscale(1);opacity:.32}.product.sold .placeholder{opacity:.3}
+.sold-overlay{display:none;position:absolute;inset:0;align-items:center;justify-content:center;background:rgba(0,0,0,.28)}
+.product.sold .sold-overlay{display:flex}
+.sold-stamp{border:3px solid var(--gold);color:var(--gold2);font-weight:1000;font-size:22px;letter-spacing:2px;padding:9px 13px;transform:rotate(-8deg);background:rgba(0,0,0,.8)}
+.product-body{padding:13px}.product-name{font-weight:900;font-size:15px}
+.meta{display:flex;justify-content:space-between;gap:8px;color:#aaa;font-size:12px;margin-top:7px}
+.price{font-size:18px;font-weight:950;margin-top:11px}
+.actions{display:flex;gap:7px;margin-top:12px}.actions button{flex:1;min-height:40px;border-radius:10px;border:1px solid var(--line);background:#202020;color:#ddd;font-weight:800}
+.sell{background:var(--gold)!important;color:#111!important;border-color:var(--gold)!important}
+.undo{color:var(--gold2)!important;border-color:#5a4c20!important}
+.select-box{display:flex;align-items:center;gap:7px;margin-top:11px;font-size:12px;color:#bbb}
+.select-box input{width:18px;height:18px;min-height:18px;accent-color:var(--gold)}
+.catalog-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 15px;padding:12px 14px;background:#101010;border:1px solid var(--line);border-radius:14px}
+.primary{border:0;border-radius:11px;background:var(--gold);color:#111;padding:11px 15px;font-weight:950}
+.secondary{border:1px solid var(--line);border-radius:11px;background:#161616;color:#ddd;padding:11px 15px;font-weight:800}
+.form-card{max-width:760px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}
+label{display:block;color:#cfcfcf;font-size:12px;font-weight:800;margin-bottom:7px}
+.upload{border:1px dashed #555;border-radius:14px;padding:16px;background:#0e0e0e}
+.preview{display:none;margin-top:12px;width:150px;height:150px;border-radius:12px;object-fit:cover;border:1px solid #444}
+.submit{width:100%;margin-top:16px;min-height:48px;border:0;border-radius:12px;background:var(--gold);color:#111;font-weight:950}
+.empty{padding:40px;text-align:center;color:#888;border:1px dashed #333;border-radius:16px}
+.toast{position:fixed;right:18px;bottom:18px;z-index:50;background:#202020;border:1px solid var(--gold);color:#fff;padding:12px 15px;border-radius:12px;display:none}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:40;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}.modal-box{background:#121212;border:1px solid #333;border-radius:18px;padding:20px;max-width:460px;width:100%}
+.modal-box h3{margin-bottom:10px}.modal-box p{color:#aaa;font-size:13px;line-height:1.5}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+@media(max-width:850px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.filters{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.header-inner{padding:10px 14px}.logo{width:145px;height:52px}.header-title{display:none}main{padding:17px 12px 40px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.filters{grid-template-columns:1fr}.catalog-bar{align-items:stretch;flex-direction:column}.catalog-bar .primary{width:100%}.product-body{padding:10px}.actions{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="header-inner">
+<img class="logo" src="logo-move-plus.png" alt="Move+ Moda Fitness">
+<div class="header-title">Catálogo interno</div>
+</div></header>
+
+<main>
+<div class="tabs">
+<button class="tab active" data-view="catalogo">Catálogo</button>
+<button class="tab" data-view="cadastro">Cadastrar item</button>
+</div>
+
+<section id="catalogo" class="view active">
+<div class="section-head"><div><h1>Catálogo</h1><p>Pesquise, filtre e selecione as peças para enviar ao cliente.</p></div><div class="count" id="count">0 itens</div></div>
+
+<div class="filters">
+<input id="search" placeholder="Buscar por nome ou cor">
+<select id="size"><option value="">Todos os tamanhos</option><option>P</option><option>M</option><option>G</option><option>GG</option><option>XG</option></select>
+<select id="color"><option value="">Todas as cores</option></select>
+<button class="secondary" id="clear">Limpar</button>
+</div>
+
+<div class="filter-status">
+<button class="pill active" data-status="all">Todos</button>
+<button class="pill" data-status="available">Disponíveis</button>
+<button class="pill" data-status="sold">Vendidos</button>
+</div>
+
+<div class="catalog-bar">
+<div><strong id="selectedCount">0</strong> selecionados para o PDF</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<button class="secondary" id="selectAll">Selecionar disponíveis</button>
+<button class="primary" id="pdf">📄 Gerar catálogo PDF</button>
+</div>
+</div>
+
+<div id="grid" class="grid"></div>
+</section>
+
+<section id="cadastro" class="view">
+<div class="section-head"><div><h1>Cadastrar item</h1><p>Adicione a foto e as informações da peça.</p></div></div>
+<form id="form" class="form-card">
+<div class="form-grid">
+<div class="full"><label for="photo">Foto do item</label>
+<div class="upload"><input id="photo" type="file" accept="image/png,image/jpeg,image/webp" required>
+<div style="font-size:11px;color:#777;margin-top:7px">JPG, PNG ou WEBP. A foto será exibida no catálogo.</div>
+<img id="preview" class="preview" alt="Prévia da foto"></div></div>
+<div class="full"><label for="name">Nome do item</label><input id="name" required placeholder="Ex.: Camiseta Dry Fit"></div>
+<div><label for="fsize">Tamanho</label><select id="fsize" required><option value="">Selecione</option><option>P</option><option>M</option><option>G</option><option>GG</option><option>XG</option></select></div>
+<div><label for="fcolor">Cor</label><input id="fcolor" required placeholder="Ex.: Preto"></div>
+<div><label for="price">Preço</label><input id="price" required inputmode="decimal" placeholder="Ex.: R$ 55,00"></div>
+</div>
+<button class="submit" type="submit">+ CADASTRAR ITEM</button>
+</form>
+</section>
+</main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY="moveplus_catalogo_v1";
+let products=[];
+let statusFilter="all";
+let photoData="";
+let selected=new Set();
+
+const demo=[
+{id:1,name:"Camiseta Dry Fit",size:"M",color:"Preto",price:"R$ 55,00",photo:"",sold:false},
+{id:2,name:"Regata Move+",size:"G",color:"Branco",price:"R$ 55,00",photo:"",sold:false},
+{id:3,name:"Manga Longa Fitness",size:"P",color:"Dourado",price:"R$ 67,00",photo:"",sold:true}
+];
+
+function load(){
+try{products=JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){products=[]}
+if(!products.length) products=demo;
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(products))}
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.style.display="block";setTimeout(()=>t.style.display="none",2200)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function colors(){const sel=document.getElementById("color"),cur=sel.value;const cs=[...new Set(products.map(p=>p.color).filter(Boolean))].sort();sel.innerHTML='<option value="">Todas as cores</option>'+cs.map(c=>`<option>${esc(c)}</option>`).join("");sel.value=cs.includes(cur)?cur:""}
+function filtered(){
+const q=document.getElementById("search").value.trim().toLowerCase(),s=document.getElementById("size").value,c=document.getElementById("color").value;
+return products.filter(p=>(!q||p.name.toLowerCase().includes(q)||p.color.toLowerCase().includes(q))&&(!s||p.size===s)&&(!c||p.color===c)&&(statusFilter==="all"||(statusFilter==="sold"?p.sold:!p.sold)));
+}
+function render(){
+colors();
+const arr=filtered();
+document.getElementById("count").textContent=arr.length+" item"+(arr.length===1?"":"s");
+document.getElementById("selectedCount").textContent=selected.size;
+const grid=document.getElementById("grid");
+if(!arr.length){grid.innerHTML='<div class="empty">Nenhum item encontrado.</div>';return}
+grid.innerHTML=arr.map(p=>`
+<article class="product ${p.sold?"sold":""}">
+<div class="photo-wrap">${p.photo?`<img src="${p.photo}" alt="${esc(p.name)}">`:'<div class="placeholder">👕</div>'}
+<div class="sold-overlay"><div class="sold-stamp">VENDIDO</div></div></div>
+<div class="product-body">
+<div class="product-name">${esc(p.name)}</div>
+<div class="meta"><span>Tamanho: <b>${esc(p.size)}</b></span><span>${esc(p.color)}</span></div>
+<div class="price">${esc(p.price)}</div>
+<div class="select-box"><input type="checkbox" data-select="${p.id}" ${selected.has(p.id)?"checked":""} ${p.sold?"disabled":""}> Selecionar para PDF</div>
+<div class="actions"><button class="${p.sold?"undo":"sell"}" data-sold="${p.id}">${p.sold?"Desfazer venda":"✓ Marcar vendido"}</button></div>
+</div></article>`).join("");
+grid.querySelectorAll("[data-sold]").forEach(b=>b.onclick=()=>{const p=products.find(x=>x.id===+b.dataset.sold);if(p){p.sold=!p.sold;if(p.sold)selected.delete(p.id);save();render();toast(p.sold?"Item marcado como vendido":"Venda desfeita")}})
+grid.querySelectorAll("[data-select]").forEach(c=>c.onchange=()=>{const id=+c.dataset.select;if(c.checked)selected.add(id);else selected.delete(id);document.getElementById("selectedCount").textContent=selected.size})
+}
+function switchView(v){
+document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===v));
+document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));
+}
+function money(v){return v.replace(/[^\d,.-]/g,"").trim()||v}
+function makePDF(){
+const chosen=products.filter(p=>selected.has(p.id)&&!p.sold);
+if(!chosen.length){toast("Selecione pelo menos uma peça disponível.");return}
+const w=window.open("","_blank");
+if(!w){toast("Permita pop-ups para gerar o PDF.");return}
+const cards=chosen.map(p=>`<div class="p">${p.photo?`<img src="${p.photo}">`:"<div class='no'>MOVE+</div>"}<div class="n">${esc(p.name)}</div><div class="m">Tamanho: ${esc(p.size)} &nbsp; • &nbsp; ${esc(p.color)}</div><div class="v">${esc(p.price)}</div></div>`).join("");
+w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Catálogo Move+ Moda Fitness</title><style>
+@page{size:A4;margin:12mm}*{box-sizing:border-box}body{font-family:Arial;margin:0;color:#111}.head{display:flex;align-items:center;border-bottom:2px solid #d4af37;padding-bottom:10px;margin-bottom:18px}.head img{width:190px;height:60px;object-fit:contain;object-position:left center}.head span{margin-left:auto;font-size:11px;color:#777}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.p{border:1px solid #ddd;border-radius:12px;overflow:hidden;padding-bottom:11px;break-inside:avoid}.p img,.no{width:100%;height:210px;object-fit:cover;background:#eee}.no{display:grid;place-items:center;font-size:40px;font-weight:900;color:#999}.n{font-size:15px;font-weight:900;padding:9px 10px 0}.m{font-size:11px;color:#666;padding:5px 10px}.v{font-size:17px;font-weight:900;padding:4px 10px;color:#9b7b11}.foot{margin-top:20px;font-size:9px;color:#888;text-align:center}</style></head><body><div class="head"><img src="logo-move-plus.png" onerror="this.style.display='none'"><span>Catálogo de produtos</span></div><div class="grid">${cards}</div><div class="foot">Move+ Moda Fitness</div><script>setTimeout(()=>window.print(),500)<\/script></body></html>`);
+w.document.close();
+}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>switchView(b.dataset.view));
+document.querySelectorAll("[data-status]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-status]").forEach(x=>x.classList.remove("active"));b.classList.add("active");statusFilter=b.dataset.status;render()});
+["search","size","color"].forEach(id=>document.getElementById(id).addEventListener("input",render));
+document.getElementById("clear").onclick=()=>{document.getElementById("search").value="";document.getElementById("size").value="";document.getElementById("color").value="";render()};
+document.getElementById("selectAll").onclick=()=>{filtered().filter(p=>!p.sold).forEach(p=>selected.add(p.id));render();toast("Itens disponíveis selecionados")}
+document.getElementById("pdf").onclick=makePDF;
+document.getElementById("photo").onchange=e=>{const f=e.target.files[0];if(!f)return;if(f.size>5*1024*1024){toast("A foto deve ter no máximo 5 MB.");e.target.value="";return}const r=new FileReader();r.onload=()=>{photoData=r.result;const im=document.getElementById("preview");im.src=photoData;im.style.display="block"};r.readAsDataURL(f)};
+document.getElementById("form").onsubmit=e=>{
+e.preventDefault();
+const name=document.getElementById("name").value.trim(),size=document.getElementById("fsize").value,color=document.getElementById("fcolor").value.trim(),price=document.getElementById("price").value.trim();
+if(!photoData){toast("Adicione a foto do item.");return}
+products.unshift({id:Date.now(),name,size,color,price:price.startsWith("R$")?price:"R$ "+price,photo:photoData,sold:false});
+save();selected.clear();e.target.reset();photoData="";document.getElementById("preview").style.display="none";switchView("catalogo");render();toast("Item cadastrado com sucesso!");
+};
+load();render();
+</script>
+</body>
+</html>
